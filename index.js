@@ -1,36 +1,38 @@
-var buttonColors = ["red", "blue", "green", "yellow"]
+let colors = ["green","red","yellow","blue"]
+let gamepattern = [];
+let userclickedpattern = []
+let level = 
 
-var gamepattern = []
-
-var userClickedPattern = [];
-
-$(".btn").click(function(){
-  var userchosencolor = $(this).attr("id");
-  userClickedPattern.push(userchosencolor);
-
-  playsound(userchosencolor)
-  animation(userchosencolor)
+$(".btn").on("click",function(){
+    let userchosencolor = $(this).attr("id")
+    userclickedpattern.push(userchosencolor)
+    playsound(userchosencolor)
+    animatepress(userchosencolor)
 })
+``
+$(document).on("keydown",function(){colorsequence()})
 
+function colorsequence(){
+    let randomnumber = Math.floor(Math.random()*4)
+    let randomchosencolor = colors[randomnumber];
+    gamepattern.push(randomchosencolor)
 
+    $("."+randomchosencolor).fadeToggle(100).fadeIn(100)
+    playsound(randomchosencolor)
+    animatepress(randomchosencolor)
 
-function nextSequence() {
-    var randomNumber = Math.round(Math.random()*3)
-    var randomChoosenColor = buttonColors[randomNumber];
-    gamepattern.push(randomChoosenColor);
-
-    $("#" + randomChoosenColor).fadeIn(100).fadeOut(100).fadeIn(100);
-
-   playsound(randomChoosenColor)
-    
 }
-
+/* function that will be used to play sound*/
 function playsound(name){
-  var audio = new Audio("sounds/"+name+".mp3");
-  audio.play();
+    let audio1 = new Audio("sounds/"+ name +".mp3")
+    audio1.play()
 }
-function animation(currentcolor){
-  $("#"+ currentcolor).addClass("pressed");
-  setTimeout(function(){$("#"+currentcolor).removeClass("pressed")}, 100);
+
+/* function to add animation to the button */
+function animatepress(currentcolor){
+    $("." + currentcolor).addClass("pressed")
+    setTimeout(function() {$("." + currentcolor).removeClass("pressed")},100)
+
 }
-nextSequence()
+
+
