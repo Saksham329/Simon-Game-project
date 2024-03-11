@@ -4,6 +4,7 @@ let userclickedpattern = []
 let level = 0 ; 
 let started = false;
 
+/* function to get keypress and to start the simon game */
 $(document).on("keydown",function(){
     if (!started){
         $("#level-title").text("level "+ level)
@@ -11,17 +12,15 @@ $(document).on("keydown",function(){
         started = true
         }
 })
+/* function that will be applied on clicking the buttons */
+$(".btn").on("click",function(){ let userchosencolor = $(this).attr("id")
+userclickedpattern.push(userchosencolor)
+playsound(userchosencolor)
+animatepress(userchosencolor)
+checkanswer(userclickedpattern.length-1)}
+   )
 
-$(".btn").on("click",function(){
-    let userchosencolor = $(this).attr("id")
-    userclickedpattern.push(userchosencolor)
-    playsound(userchosencolor)
-    animatepress(userchosencolor)
-    checkanswer(userclickedpattern.length-1)
-})
-``
-
-
+   /* main function*/ 
 function colorsequence(){
     level++
     userclickedpattern = []
@@ -35,8 +34,7 @@ function colorsequence(){
     animatepress(randomchosencolor)
 
 }
-/* function that will be used to play sound*/
-
+/* if else statement to check game pattern with user changed pattern*/
 function checkanswer(currentlevel){
     if(userclickedpattern[currentlevel] === gamepattern[currentlevel])
     {console.log("success");
@@ -44,9 +42,23 @@ function checkanswer(currentlevel){
         setTimeout(function(){colorsequence()},1000)
     }
 }
-    else{console.log("wrong")}
+    else{console.log("wrong")
+    playsound("wrong");
+    $("body").addClass("game-over");
+    setTimeout(function(){$("body").removeClass("game-over")},200)
+    $("#level-title").text("Game Over, Press Any Key to Restart")
+
+    startover()
+}
 }
 
+function startover(){
+    level = 0;
+    gamepattern = []
+    started = false
+}
+
+/* function that will be used to play sound*/
 
 function playsound(name){
     let audio1 = new Audio("sounds/"+ name +".mp3")
